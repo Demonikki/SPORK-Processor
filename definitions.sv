@@ -2,24 +2,24 @@
 package definitions;
 
 // Instruction map
-    const logic [2:0]kADD  = 2'b000;
-    const logic [2:0]kSUB  = 2'b001;
-    const logic [2:0]kSLL  = 2'b010;
-    const logic [2:0]kSLU  = 2'b011;
-    const logic [2:0]kSLR  = 2'b100;
-    const logic [2:0]kGT   = 2'b101;
-    const logic [2:0]kEQ   = 2'b110;
-    const logic [2:0]kNEG  = 2'b111;
+    const logic [3:0]kADD  = 4'b0000;
+    const logic [3:0]kSUB  = 4'b0001;
+    const logic [3:0]kSLL  = 4'b0010;
+    const logic [3:0]kSLU  = 4'b0011;
+    const logic [3:0]kSLR  = 4'b0100;
+    const logic [3:0]kGT   = 4'b0101;
+    const logic [3:0]kEQ   = 4'b0110;
+    const logic [3:0]kNEG  = 4'b0111;
 
-    typedef enum logic[2:0] {
-        ADD     = 2'h0,
-        SUB     = 2'h1
-        SLL     = 2'h2,
-        SRA     = 2'h3,
-        SRL     = 2'h4,
-        GT      = 2'h5,
-        EQ      = 2'h6,
-        NEG     = 2'h7
+    typedef enum logic[3:0] {
+        ADD     = 4'h0,
+        SUB     = 4'h1,
+        SLL     = 4'h2,
+        SRA     = 4'h3,
+        SRL     = 4'h4,
+        GT      = 4'h5,
+        EQ      = 4'h6,
+        NEG     = 4'h7
     } op_mne;
 
 endpackage // defintions
