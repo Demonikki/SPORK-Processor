@@ -37,7 +37,7 @@ initial begin
 	DataIn = 'b00001111;
 
    #10ns;
-    
+
 	//Write value 4 into address 12
 	data_addr = 'b00001100;
 	WriteMem = 1;
@@ -51,6 +51,7 @@ initial begin
 	WriteMem = 1;
 	DataIn = 'b00000110;
 
+    #10ns;
 	//Read from address 0 (should be 15)
 	data_addr = 'b00000000;
 	ReadMem = 1; WriteMem = 0;
