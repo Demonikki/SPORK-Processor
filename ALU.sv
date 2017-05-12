@@ -14,68 +14,89 @@ module ALU(
   output              EQUAL,        // 1: INPUTA = INPUTB
 
   //temporary register
+  output bit 	 tempbit,
   output reg    [ 4:0] temp,
   output reg	 [ 7:0] temp8
     );
 
-	 
+
   assign EQUAL = (INPUTA == INPUTB) ? 1'b1 : 1'b0;   // are inputs equal?
   op_mne op_mnemonic;       // type enum: used for convenient waveform viewing
 
-  
+
   always_comb begin
+  
+  //default values
+  tempbit = 1'b0;
+  temp = 0;
+  ZERO = 0;
+  CO = 1'b0;
+  OUT = 0;
+  //done = 0;
+  
   case(OP)
 
     //Simple
 		kADD    : {CO,OUT} = INPUTA+INPUTB+CI;    // A+B+CI
 		kSUB    : {CO,OUT} = INPUTA-INPUTB+CI;  // A-B+CI
     //kSLL    : {CO,OUT} = {INPUTA,CI};     // shift A left, bringing in CI & driving CO
-      
+
 		kSLL    : {CO, OUT} = INPUTA << 1;
       kSRL    : {CO, OUT} = INPUTA >> 1;
       kSRA    : {CO, OUT} =$signed(INPUTA >>> 1);
       kGT     : {CO, OUT} = INPUTA > INPUTB;
       kLT     : {CO, OUT} = INPUTA < INPUTB;
-      
-		
-      kSLG    : {CO, OUT} =
-										temp <= INPUTA[7]:
-										INPUTA << 1;
+
+
+      kSLG    : 	begin
+						{tempbit} = INPUTA[7];
+						{CO, OUT} = INPUTA << 1;
+						end
+                            
+      kSRG    : 	begin
+						tempbit = INPUTA[0];	
+						{CO, OUT} = INPUTA >> 1;
+						end
+                            
+      kSLO    : 	begin
+						{CO, OUT} = INPUTA << 1;
+						//INPUTA[0] = temp;
+						end
+                     
+      kSRO    : 	begin
+						{CO, OUT} = INPUTA >> 1;
+						//INPUTA[7] = temp;
+						end
+                            
+      kNEG    : {CO, OUT} = 0 - INPUTA;
+                            
+      kRLZ    : 	begin
+						while (INPUTA[7] == 0) 
+										begin
+						//should remove this while loop INPUTA << 1;	
+										end
+						{CO, OUT} = INPUTA;
+						end
+                             
+      kSCP    : 
+										if( (INPUTB - INPUTC) > 0) 
+										begin
+											//INPUTB = INPUTB - INPUTC;
+										end
+										else 
+										begin
+											if(INPUTA > 0) 
+												begin
+												//INPUTA = INPUTA - 1;
+												//INPUTB = INPUTB - INPUTC + 255;
+												end
+											
+											//else
+												//done = 1;
+										end
 										
-                            /*
-      kSRG    : {CO, OUT} = {
-										temp = INPUTA[0];
-										INPUTA >> 1;
-                            }
-      kSLO    : {CO, OUT} = {
-										INPUTA << 1;
-										INPUTA[0] = temp;
-                            }
-      kSRO    : {CO, OUT} = {
-										INPUT >> 1;
-										INPUTA[7] = temp;
-                            }
-      kNEG    : {CO, OUT} = {
-										0 + INPUTA;
-                            }
-      kRLZ    : {CO, OUT} = {
-										//while (INPUTA[7] == 0)
-											//INPUTA << 1;
-                            }
-      kSCP    : {CO, OUT} = {
-										if((INPUTB - INPUTC) > 0){
-											INPUTB = INPUTB - INPUTC;
-										} 
-										else{
-											if(INPUTA > 0){
-												INPUTA = INPUTA - 1;
-												INPUTB = INPUTB - INPUTC + 255;
-											}
-											else{
-												done = 1;
-											}
-										}
-                            }
+                            
+									 /*
       kSEQ    : {CO, OUT} = {
 										if(INPUTA[7:4] == INPUTD){
 											temp = temp + 1;
@@ -104,7 +125,7 @@ module ALU(
 											temp = temp + 1;
 										}
       */
-    default : {CO,OUT} = 9'b0;
+    default : {tempbit} = 1'b1;//{CO,OUT} = 9'b0;
   endcase
   case(OUT)
     8'b0    : ZERO = 1'b1;
@@ -114,6 +135,6 @@ module ALU(
     op_mnemonic = op_mne'(OP);
 
   end
-  
+
 
 endmodule

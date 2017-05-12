@@ -16,7 +16,7 @@ package definitions;
     const logic [3:0]kSRO  = 4'b1010;
     const logic [3:0]kNEG  = 4'b1011;
     const logic [3:0]kRLZ  = 4'b1100;
-    const logic [3:0]kSCO  = 4'b1101;
+    const logic [3:0]kSCP  = 4'b1101;
     const logic [3:0]kSEQ  = 4'b1110;
     const logic [3:0]kSQB  = 4'b1111;
 
