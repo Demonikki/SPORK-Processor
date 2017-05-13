@@ -28,7 +28,7 @@ initial begin
 
 	ReadMem = 0;
 	WriteMem = 0;
-	//starting at 15ns from beginning
+	//starting at 20ns from beginning
 	#20ns;
 
 	//Write value 15 into address 0 in memory
@@ -63,7 +63,7 @@ initial begin
 	//Read from address 12 (should be 6)
 	data_addr = 'b00001100;
 	ReadMem = 1; WriteMem = 0;
-	//DataOut should hold the value 15
+	//DataOut should hold the value 6
 
 	//stop
 	#10ns $stop;
