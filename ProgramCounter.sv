@@ -4,7 +4,7 @@ module ProgramCounter (
             reset,
             halt,
             jump,
-    output logic [7:0] jump_value,
+    input logic [7:0] jump_value,
     output logic [15:0] PC
 	 );
 
@@ -12,7 +12,7 @@ module ProgramCounter (
         if(start)
             PC <= 0;
         else if (jump)
-            PC <= 15;
+            PC <= jump_value;
         else if (!halt)
             PC <= PC + 1;
         else
