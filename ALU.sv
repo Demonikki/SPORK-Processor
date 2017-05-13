@@ -12,11 +12,11 @@ module ALU(
   output logic        CO,             // shift or carry out to left (MSB side)
                       ZERO,       // 1: OUT = 0
   output              EQUAL,        // 1: INPUTA = INPUTB
-
+  output bit 			 flagA,
   //temporary register
-  output bit 	 tempbit,
-  output reg    [ 4:0] temp,
-  output reg	 [ 7:0] temp8
+  output bit 	 		tempbit,
+  output reg    		[ 4:0] temp,
+  output reg	 		[ 7:0] temp8
     );
 
 
@@ -28,6 +28,7 @@ module ALU(
   
   //default values
   tempbit = 1'b0;
+  flagA = 0;
   temp = 0;
   ZERO = 0;
   CO = 1'b0;
@@ -49,83 +50,91 @@ module ALU(
 
 
       kSLG    : 	begin
-						{tempbit} = INPUTA[7];
+						temp = INPUTA[7];
 						{CO, OUT} = INPUTA << 1;
 						end
                             
-      kSRG    : 	begin
-						tempbit = INPUTA[0];	
-						{CO, OUT} = INPUTA >> 1;
-						end
+      kSRG    : 	{OUT, CO} = INPUTA >> 1;
+						
                             
       kSLO    : 	begin
-						{CO, OUT} = INPUTA << 1;
-						//INPUTA[0] = temp;
+						OUT = INPUTA << 1;
+						OUT[0] = CI;
 						end
                      
+							
       kSRO    : 	begin
-						{CO, OUT} = INPUTA >> 1;
-						//INPUTA[7] = temp;
+						OUT = INPUTA >> 1;
+						OUT[7] = CI;
 						end
                             
-      kNEG    : {CO, OUT} = 0 - INPUTA;
-                            
+      kNEG    : 	OUT = 0 - INPUTA;
+		
+      /*                      
       kRLZ    : 	begin
 						while (INPUTA[7] == 0) 
 										begin
-						//should remove this while loop INPUTA << 1;	
+											INPUTA << 1;	
 										end
 						{CO, OUT} = INPUTA;
 						end
-                             
+      */   
+		
       kSCP    : 
 										if( (INPUTB - INPUTC) > 0) 
 										begin
-											//INPUTB = INPUTB - INPUTC;
+											OUT = INPUTB - INPUTC;
+											CO = 1;
 										end
 										else 
 										begin
-											if(INPUTA > 0) 
+											temp = INPUTB - INPUTC;
+											if(INPUTA > 0) begin
+												flagA = 1;
 												begin
-												//INPUTA = INPUTA - 1;
-												//INPUTB = INPUTB - INPUTC + 255;
+													OUT = INPUTB - INPUTC + 255;
 												end
-											
-											//else
-												//done = 1;
+											end
+											else begin
+												OUT = 0;
+												CO = 0;
+											end
 										end
 										
-                            
-									 /*
-      kSEQ    : {CO, OUT} = {
-										if(INPUTA[7:4] == INPUTD){
-											temp = temp + 1;
-                              }
-										if(INPUTA[6:3] == INPUTD){
-											temp = temp + 1;
-                              }
-										if(INPUTA[5:2] == INPUTD){
-											temp = temp + 1;
-                              }
-										if(INPUTA[4:1] == INPUTD){
-											temp = temp + 1;
-                              }
-										if(INPUTA[3:0] == INPUTD){
-											temp = temp + 1;
-                              }
-                            }
-      kSQB    : {CO, OUT} = {
-										if(INPUTA[2:0]+INPUTB[7] == INPUTD){
-											temp = temp + 1;
-										}
-										if(INPUTA[1:0]+INPUTB[7:6] == INPUTD){
-											temp = temp + 1;
-										}
-										if(INPUTA[0]+INPUTB[7:5] == INPUTD){
-											temp = temp + 1;
-										}
-      */
-    default : {tempbit} = 1'b1;//{CO,OUT} = 9'b0;
+                       
+									 
+      kSEQ    : 			begin		
+		
+										if(INPUTA[7:4] == INPUTD)
+											OUT = OUT + 1;
+                              
+										if(INPUTA[6:3] == INPUTD)
+											OUT = OUT + 1; 
+                              
+										if(INPUTA[5:2] == INPUTD)
+											OUT = OUT + 1;
+                              
+										if(INPUTA[4:1] == INPUTD)
+											OUT = OUT + 1;
+                              
+										if(INPUTA[3:0] == INPUTD)
+											OUT = OUT + 1;
+								end
+								
+											
+      kSQB    : begin
+										if({INPUTA[2:0], INPUTB[7]} == INPUTD)
+											OUT = OUT + 1;
+										
+										if({INPUTA[1:0], INPUTB[7:6]} == INPUTD)
+											OUT = OUT + 1;
+										
+										if({INPUTA[0], INPUTB[7:5]} == INPUTD)
+											OUT = OUT + 1;
+					 end						
+						
+						
+    default : {CO,OUT} = 9'b0;
   endcase
   case(OUT)
     8'b0    : ZERO = 1'b1;
