@@ -3,7 +3,7 @@
 import definitions::*;            // includes package "definitions"
 module ALU(
   input        [ 2:0] OP,         // ALU opcode, part of microcode
-  input               CI,             // shift or carry in from right (LSB side)
+  input bit           CI,             // shift or carry in from right (LSB side)
   input        [ 7:0] INPUTA,       // data inputs
                       INPUTB,
                       INPUTC,
@@ -12,11 +12,10 @@ module ALU(
   output logic        CO,             // shift or carry out to left (MSB side)
                       ZERO,       // 1: OUT = 0
   output              EQUAL,        // 1: INPUTA = INPUTB
-  output bit 			 flagA,
+  output bit 			 flagA
   //temporary register
-  output bit 	 		tempbit,
-  output reg    		[ 4:0] temp,
-  output reg	 		[ 7:0] temp8
+  
+  //reg    		[ 4:0] temp
     );
 
 
@@ -27,9 +26,8 @@ module ALU(
   always_comb begin
   
   //default values
-  tempbit = 1'b0;
+  
   flagA = 0;
-  temp = 0;
   ZERO = 0;
   CO = 1'b0;
   OUT = 0;
@@ -50,7 +48,6 @@ module ALU(
 
 
       kSLG    : 	begin
-						temp = INPUTA[7];
 						{CO, OUT} = INPUTA << 1;
 						end
                             
@@ -88,7 +85,7 @@ module ALU(
 										end
 										else 
 										begin
-											temp = INPUTB - INPUTC;
+											//temp = INPUTB - INPUTC;
 											if(INPUTA > 0) begin
 												flagA = 1;
 												begin
