@@ -1,0 +1,31 @@
+
+get 00111
+mv r3 0
+mv r12 1
+lsd r3 0
+mv r2 0 
+mv r4 1
+get 01010
+lsd r3 0
+mv r2 0
+mv r1 1
+get 01001
+lsd r3 0
+mv r2 0
+mv r7 1 
+mv r3 0 
+add 1 0
+lsd r0 0 
+mv r2 0
+mv r8 1
+seq r7 
+sqb r7 r8
+mv r8 0
+mv r7 1
+blt r3 0 
+seq r7 
+get 01000 
+mv r3 0
+mv r2 1
+lsd r5 1
+halt
