@@ -1,0 +1,130 @@
+get 10001
+lsd R3 0
+mv R2 0
+mv R12 1
+mv R8 1
+get 10010
+lsd R3 0
+mv R2 0
+mv R13 1
+mv R9 1
+get 10011
+lsd R3 0
+mv R2 0
+mv R14 1
+mv R10 1
+get 10100
+lsd R3 0
+mv R2 0
+mv R15 1
+mv R11 1
+get 00000
+mv R3 0
+mv R1 1
+get 10001
+mv R3 0
+add R1 0
+blt R10 0
+mv R10 0
+mv R14 1
+mv R11 0
+mv R15 1
+sg R14 0
+so R15 0
+add R1 0
+blt R0 0
+mv R8 0
+add R14 0
+mv R4 1
+mv R9 0
+add R15 0
+mv R5 1
+get 00000
+mv R3 0
+sg R12 0
+so R13 0
+add 1 0
+blt R1 0
+mv R10 0
+add R12 0
+mv R6 1
+mv R110
+add R13 0
+mv R7 1
+mv R3 0
+sg R3 0
+so R2 0
+add R1 0
+blt R1 0
+mv R2 0
+add R14 0
+mv R12 1
+mv R3 0
+add R15 0
+mv R13 1
+bgt R10 0
+mv R3 0
+sg R14 0
+so R15 0
+add 1 0
+blt R1 0
+mv R8 0
+add R14 0
+mv R4 1
+mv R9 0	
+add R15 0
+mv R5 1
+mv R3 0
+sg R12 0
+so R13 0
+add 1 0
+blt R1 0
+mv R10 0
+add R12 0
+mv R6 1	
+mv R110	
+add R13 0
+mv R7 1
+mv R3 0
+sg R3 1
+so R2 1
+add 1 0
+blt R1 0
+mv R2 0
+add R14 1	
+mv R12 1	
+mv R3 0	
+add R15 1
+mv R13 1
+mv R4 0
+mv R8 1
+mv R5 0
+mv R9 1
+mv R6 0
+mv R10 1
+mv R7 0
+mv R11 1
+mv R12 0
+mv R14 1
+mv R13 0
+mv R15 1
+get 11001
+mv R3 0
+mv R1 1
+bgt R1 0
+get 10101
+mv R3 0
+mv R2 1
+lsd R8 
+get 10110
+mv R3 0
+mv R2 1
+lsd R9 1
+get 10111
+mv R3 0
+mv R2 1
+lsd R14 1	
+get 11000
+mv R3 0
+mv R2 1
+lsd R15 1	
