@@ -3,6 +3,10 @@ import java.lang.Integer;
 
 public class Assembler {
 
+    /* Description: Converts the input number into a 4-bit binary String
+     @param: String containing the decimal number
+     @return: 4-bit Binary string
+    */
     public static String toBinary (String s) {
         int num = Integer.parseInt(s);
         String result = Integer.toBinaryString(num);
@@ -17,6 +21,11 @@ public class Assembler {
 
         return result;
     }
+
+    /* Description: Converts the input number into a 5-bit binary String
+     @param: String containing the decimal number
+     @return: 5-bit Binary string
+    */
     public static String toBinary5 (String s) {
         int num = Integer.parseInt(s);
         String result = Integer.toBinaryString(num);
@@ -34,6 +43,12 @@ public class Assembler {
         return result;
     }
 
+    //Register parse methods
+
+    /* Description: Converts the input number into a 2-bit binary String
+     @param: String containing the register name and number
+     @return: 2-bit Binary string representing the register
+    */
     public static String toReg2(String s) {
         String reg = s.substring(1);
         int regNum = Integer.parseInt(reg);
@@ -41,6 +56,11 @@ public class Assembler {
         if(result.length() == 1) result = "0" + result;
         return result;
     }
+
+    /* Description: Converts the input number into a 3-bit binary String
+     @param: String containing the register name and number
+     @return: 3-bit Binary string representing the register
+    */
     public static String toReg3(String s) {
         String reg = s.substring(1);
         int regNum = Integer.parseInt(reg);
@@ -51,17 +71,26 @@ public class Assembler {
             result = "0" + result;
         return result;
     }
-    //4 bits
+
+    /* Description: Converts the input number into a 4-bit binary String
+     @param: String containing the register name and number
+     @return: 4-bit Binary string representing the register
+    */
     public static String toReg(String s) {
         String reg = s.substring(1);
         String result = toBinary(reg);
         return result;
     }
 
+    /* Description: Converts a line of assembly code into machine code
+     @param: String containing a single line of assembly code
+     @return: Corresponding binary (machine) code
+    */
     public static String parseCommand(String s) {
         String[] inst = s.split(" ");
         String result = "";
 
+        //Determine the instruction and construct the machine code
         switch(inst[0]) {
             case "rs":
                 result = "0001";    //opcode
@@ -145,19 +174,20 @@ public class Assembler {
         return result;
     }
 
+    //Parse the assembly code from input file and write out machine code to output file
     public static void main(String args[]) throws IOException{
         File file = new File(args[0]);
         BufferedReader reader;
         PrintWriter writer = new PrintWriter(args[1]);
-        String line = "";
+        String binaryCode = "";
 
         reader = new BufferedReader(new FileReader(file));
         String text;
 
+        //Read each line from input file, generate machine code and write to output file
         while((text = reader.readLine()) != null) {
-            line = parseCommand(text);
-            //System.out.println(text + " : " + line);
-            writer.println(line);
+            binaryCode = parseCommand(text);
+            writer.println(binaryCode);
         }
         writer.close();
 
