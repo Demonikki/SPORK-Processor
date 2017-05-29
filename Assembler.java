@@ -77,6 +77,7 @@ public class Assembler {
      @return: 4-bit Binary string representing the register
     */
     public static String toReg(String s) {
+
         String reg = s.substring(1);
         String result = toBinary(reg);
         return result;
@@ -89,7 +90,7 @@ public class Assembler {
     public static String parseCommand(String s) {
         String[] inst = s.split(" ");
         String result = "";
-
+System.out.println(s);
         //Determine the instruction and construct the machine code
         switch(inst[0]) {
             case "rs":
@@ -130,7 +131,8 @@ public class Assembler {
                 break;
             case "get":
                 result = "1000";    //opcode
-                result += toBinary5(inst[1]);
+                //result += toBinary5(inst[1]);
+                result += inst[1];
                 break;
             case "add":
                 result = "1001";
@@ -178,7 +180,7 @@ public class Assembler {
     public static void main(String args[]) throws IOException{
         File file = new File(args[0]);
         BufferedReader reader;
-        PrintWriter writer = new PrintWriter(args[1]);
+        PrintWriter writer = new PrintWriter(args[0]+"_binary");
         String binaryCode = "";
 
         reader = new BufferedReader(new FileReader(file));
