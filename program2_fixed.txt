@@ -26,7 +26,7 @@ mv r3 1 //Move new value into r3 again for branching
 mv r2 0 //Move LSB to r0 then r8
 mv r8 1 //contains LSB of Sequence
 seq r7 //checks for sequences in MSB register and then sequences between registers
-sqb r7r8
+sqb r7 r8
 beq r5 1
 mv r8 0 //moves LSB register to MSB register
 mv r7 1
@@ -37,4 +37,3 @@ mv r2 1 //moves sequence value to r2 in prep for storage
 get 01000 //gets value 10 so we can store to address 10
 lsd r3 1 //stores total sequences from r2 to address 10
 halt
-
