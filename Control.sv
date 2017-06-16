@@ -119,7 +119,7 @@ module Control(
 			end // 3:
 
 			4: begin //beq
-				REG_DST = 12;
+				REG_DST = 13;//dest in this case is the value to branch by
 				BRANCH = 1;
 				BRANCHCOND = 1;
 				ALU_SRC_B = 2;
@@ -129,15 +129,15 @@ module Control(
 				MEM_WRITE = 0;
 				REG_READ = 1;
 				REG_WRITE = 0;
-				SOURCE_REG_A = INSTRUCTION[4:1];
-				SOURCE_REG_B = 1;
+				SOURCE_REG_A = INSTRUCTION[4:1]; //operand 1
+				SOURCE_REG_B = 14; //operand 2
 				SOURCE_REG_C = 0;
 				OV_WRITE = 1;
 				HALT = 0;
 			end // 4:
 
 			5: begin //bgt
-				REG_DST = 12;
+				REG_DST = 12;//dest in this case is the value to branch by
 				BRANCH = 1;
 				BRANCHCOND = 1;
 				ALU_SRC_B = 2;
@@ -147,15 +147,15 @@ module Control(
 				MEM_WRITE = 0;
 				REG_READ = 1;
 				REG_WRITE = 0;
-				SOURCE_REG_A = INSTRUCTION[4:1];
-				SOURCE_REG_B = 1;
+				SOURCE_REG_A = INSTRUCTION[4:1]; //operand 1
+				SOURCE_REG_B = 1; //operand 2
 				SOURCE_REG_C = 0;
 				OV_WRITE = 1;
 				HALT = 0;
 			end // 5:
 
 			6: begin //blt
-				REG_DST = 12;
+				REG_DST = 12; //dest in this case is the value to branch by
 				BRANCH = 1;
 				BRANCHCOND = 1;
 				ALU_SRC_B = 2;
@@ -165,14 +165,15 @@ module Control(
 				MEM_WRITE = 0;
 				REG_READ = 1;
 				REG_WRITE = 0;
-				SOURCE_REG_A = INSTRUCTION[4:1];
-				SOURCE_REG_B = 1;
+				SOURCE_REG_A = INSTRUCTION[4:1]; //operand 1
+				SOURCE_REG_B = 1; //operand 2
 				SOURCE_REG_C = 0;
 				OV_WRITE = 1;
 				HALT = 0;
 			end // 6:
 
 			7: begin //Load/Store
+				REG_DST = 2 //reg dest in this case where the loaded value goes or where the stored value comes from
 				BRANCH = 0;
 				BRANCHCOND = 0;
 				ALU_SRC_B = 2;
@@ -182,17 +183,15 @@ module Control(
 						MEM_READ = 1;
 						REG_WRITE = 1;
 						REG_READ = 0;
-						REG_DST = 2;
 					end // 0:
 					1: begin
 						MEM_WRITE = 1;
 						REG_WRITE = 0;
 						REG_READ = 1;
-						REG_DST = 0;
 					end // 1:
 				endcase // LASTBIT
 				MEM_TO_REG = 1;
-				SOURCE_REG_A = INSTRUCTION[4:1];
+				SOURCE_REG_A = INSTRUCTION[4:1]; //source A is the address to load from store to
 				SOURCE_REG_B = 0;
 				SOURCE_REG_C = 0;
 				OV_WRITE = 1;
