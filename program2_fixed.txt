@@ -1,31 +1,40 @@
-
-get 00111
+get 11001 //gets value 12
 mv r3 0
-mv r12 1
-lsd r3 0
-mv r2 0
-mv r4 1
-get 01010
-lsd r3 0
-mv r2 0
-mv r1 1
-get 01001
-lsd r3 0
-mv r2 0
+mv r12 1 //moves 12 to r12
+get 10101 //gets value 5
+mv r3 0
+mv r13 1 //moves 5 to r13
+get 00111 // 9
+lsd r3 0 //stores address 9 value in r2
+mv r2 0 //moves address 9 value to r0
+mv r4 1 //moves sequence to r4
+get 00001 //Grab value 255 and check with r5 (should check within loop?)
+mv r3 0
+mv r14 1 //moves 255 to r14 for later use
+get 01010 //96
+mv r3 0 //moves r3 to r0 then to r1
+mv r1 1 //Contains final address value for branching
+get 01001 //32
+lsd r3 0 //gets address 32 value
+mv r2 0 //moves MSB to r0
+mv r7 1 //contains MSB of Sequence
+mv r3 0 //need to move sequence address to r0 to increment
+get 10001 //get 1 value
+add r3 0 //add r3 to r0 store in r0
+lsd r0 0 //address value 33 in r2
+mv r3 1 //Move new value into r3 again for branching
+mv r2 0 //Move LSB to r0 then r8
+mv r8 1 //contains LSB of Sequence
+seq r7 //checks for sequences in MSB register and then sequences between registers
+sqb r7r8
+beq r5 1
+mv r8 0 //moves LSB register to MSB register
 mv r7 1
-mv r3 0
-add R1 0
-lsd r0 0
-mv r2 0
-mv r8 1
-seq r7 r0
-sqb r7 r8
-mv r8 0
-mv r7 1
-blt r3 0
-seq r7 r0
-get 01000
-mv r3 0
-mv r2 1
-lsd r5 1
+blt r3 0 //branch if less than 96
+seq r7 //final check on address 96
+mv r5 0
+mv r2 1 //moves sequence value to r2 in prep for storage
+get 01000 //gets value 10 so we can store to address 10
+lsd r3 1 //stores total sequences from r2 to address 10
 halt
+
