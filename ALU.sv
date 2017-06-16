@@ -36,111 +36,116 @@ module ALU(
   case(OP)
 
     //Simple
-		kADD    : {CO,OUT} = INPUTA+INPUTB+CI;    // A+B+CI
-		kSUB    : {CO,OUT} = INPUTA-INPUTB+CI;  // A-B+CI
-    //kSLL    : {CO,OUT} = {INPUTA,CI};     // shift A left, bringing in CI & driving CO
+	kADD    : {CO,OUT} = INPUTA+INPUTB+CI;    // A+B+CI
+	
+	kSUB    : {CO,OUT} = INPUTA-INPUTB+CI;  // A-B+CI
 
-		kSLL    : {CO, OUT} = INPUTA << 1;
-      kSRL    : {CO, OUT} = INPUTA >> 1;
-      kSRA    : {CO, OUT} =$signed(INPUTA >>> 1);
-      kGT     : {CO, OUT} = INPUTA > INPUTB;
-      kLT     : {CO, OUT} = INPUTA < INPUTB;
+	kSLL    : {CO,OUT} = INPUTA << 1;
+    
+    kSRL    : {CO,OUT} = INPUTA >> 1;
+    
+    kSRA    : {CO,OUT} = $signed(INPUTA >>> 1);
+    
+    kGT     : {CO,OUT} = INPUTA > INPUTB;
+    
+    kLT     : {CO,OUT} = INPUTA < INPUTB;
 
 
-      kSLG    : 	begin
-						{CO, OUT} = INPUTA << 1;
-						end
+    kSLG    : 	begin
+					{CO, OUT} = INPUTA << 1;
+				end
                             
-      kSRG    : 	{OUT, CO} = INPUTA >> 1;
-						
+    kSRG    : 	begin
+    				{OUT, CO} = INPUTA >> 1;
+				end		
                             
-      kSLO    : 	begin
-						OUT = INPUTA << 1;
-						OUT[0] = CI;
-						end
+    kSLO    : 	begin
+					OUT = INPUTA << 1;
+					OUT[0] = CI;
+				end
                      
 							
-      kSRO    : 	begin
-						OUT = INPUTA >> 1;
-						OUT[7] = CI;
-						end
+    kSRO    : 	begin
+					OUT = INPUTA >> 1;
+					OUT[7] = CI;
+				end
                             
-      kNEG    : 	OUT = 0 - INPUTA;
-		
-      /*                      
-      kRLZ    : 	begin
-						while (INPUTA[7] == 0) 
-										begin
-											INPUTA << 1;	
-										end
-						{CO, OUT} = INPUTA;
+    kNEG    : 	OUT = 0 - INPUTA;
+		                      
+    kRLZ    : 	begin
+    					if(INPUTA[7] == 0 && INPUTA[6] == 0 && INPUTA[5] == 0 && INPUTA[4] == 0 && INPUTA[3] == 0 && INPUTA[2] == 0 && INPUTA[1] == 0)
+							OUT = INPUTA << 7;
+                        if(INPUTA[6] == 0 && INPUTA[5] == 0 && INPUTA[4] == 0 && INPUTA[3] == 0 && INPUTA[2] == 0 && INPUTA[1] == 0)
+							OUT = INPUTA << 6;
+						if(INPUTA[5] == 0 && INPUTA[4] == 0 && INPUTA[3] == 0 && INPUTA[2] == 0 && INPUTA[1] == 0)
+							OUT = INPUTA << 5;
+						if(INPUTA[4] == 0 && INPUTA[3] == 0 && INPUTA[2] == 0 && INPUTA[1] == 0)
+							OUT = INPUTA << 4;
+						if(INPUTA[3] == 0 && INPUTA[2] == 0 && INPUTA[1] == 0)
+							OUT = INPUTA << 3;
+						if(INPUTA[2] == 0 && INPUTA[1] == 0)
+							OUT = INPUTA << 2;
+						if(INPUTA[1] == 0)
+							OUT = INPUTA << 1;
+				end  
+    kSCP    : 
+				if( (INPUTB - INPUTC) > 0) 
+					begin
+						OUT = INPUTB - INPUTC;
+						CO = 1;
+					end
+				else 
+					begin
+						//temp = INPUTB - INPUTC;
+						if(INPUTA > 0) begin
+							flagA = 1;
+							begin
+								OUT = INPUTB - INPUTC + 255;
+							end
 						end
-      */   
+						else begin
+							OUT = 0;
+							CO = 0;
+							end
+						end							 
+    kSEQ    : 	begin		
 		
-      kSCP    : 
-										if( (INPUTB - INPUTC) > 0) 
-										begin
-											OUT = INPUTB - INPUTC;
-											CO = 1;
-										end
-										else 
-										begin
-											//temp = INPUTB - INPUTC;
-											if(INPUTA > 0) begin
-												flagA = 1;
-												begin
-													OUT = INPUTB - INPUTC + 255;
-												end
-											end
-											else begin
-												OUT = 0;
-												CO = 0;
-											end
-										end
-										
-                       
-									 
-      kSEQ    : 			begin		
-		
-										if(INPUTA[7:4] == INPUTD)
-											OUT = OUT + 1;
+					if(INPUTA[7:4] == INPUTD)
+						OUT = OUT + 1;
                               
-										if(INPUTA[6:3] == INPUTD)
-											OUT = OUT + 1; 
+					if(INPUTA[6:3] == INPUTD)
+						OUT = OUT + 1; 
                               
-										if(INPUTA[5:2] == INPUTD)
-											OUT = OUT + 1;
+					if(INPUTA[5:2] == INPUTD)
+						OUT = OUT + 1;
                               
-										if(INPUTA[4:1] == INPUTD)
-											OUT = OUT + 1;
+					if(INPUTA[4:1] == INPUTD)
+						OUT = OUT + 1;
                               
-										if(INPUTA[3:0] == INPUTD)
-											OUT = OUT + 1;
-								end
+					if(INPUTA[3:0] == INPUTD)
+						OUT = OUT + 1;
+				end
 								
 											
-      kSQB    : begin
-										if({INPUTA[2:0], INPUTB[7]} == INPUTD)
-											OUT = OUT + 1;
+    kSQB    : 	begin
+					if({INPUTA[2:0], INPUTB[7]} == INPUTD)
+						OUT = OUT + 1;
 										
-										if({INPUTA[1:0], INPUTB[7:6]} == INPUTD)
-											OUT = OUT + 1;
+					if({INPUTA[1:0], INPUTB[7:6]} == INPUTD)
+						OUT = OUT + 1;
 										
-										if({INPUTA[0], INPUTB[7:5]} == INPUTD)
-											OUT = OUT + 1;
-					 end						
-						
-						
+					if({INPUTA[0], INPUTB[7:5]} == INPUTD)
+						OUT = OUT + 1;
+					end											
     default : {CO,OUT} = 9'b0;
   endcase
+
   case(OUT)
     8'b0    : ZERO = 1'b1;
     default : ZERO = 1'b0;
   endcase
-//$display("ALU Out %d \n",OUT);
-    op_mnemonic = op_mne'(OP);
 
+	//$display("ALU Out %d \n",OUT);
+	op_mnemonic = op_mne'(OP);
   end
-
-
 endmodule
